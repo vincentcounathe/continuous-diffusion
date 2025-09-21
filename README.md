@@ -1,14 +1,13 @@
-# continuous-diffusion
+# Continuous Diffusion
 
-small, single-GPU **DDPM** on MNIST/FashionMNIST.  
-tiny UNet, cosine/linear beta schedules, DDPM/DDIM sampling. good for quick demos.
+A small diffusion model implementation for images.  
+Trains a UNet on MNIST or FashionMNIST and generates samples using DDPM or DDIM.  
+Designed to be simple and runnable on a single GPU or Colab.
 
 ---
 
-## install
+## Usage
 
-```bash
-git clone https://github.com/vincentcounathe/continuous-diffusion
-cd continuous-diffusion
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+- **Training:** run `train.py` to fit the model.  
+- **Sampling:** run `sample.py` with a checkpoint to generate images.  
+- Results (checkpoints and sample grids) are saved in `runs/continuous/`.  
