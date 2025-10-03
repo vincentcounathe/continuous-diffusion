@@ -2,10 +2,29 @@
 # -*- coding: utf-8 -*-
 
 import math
+from typing import Literal
 import torch
 
 # Beta schedules
-def make_beta_schedule(T, schedule="cosine", max_beta=0.999):
+def make_beta_schedule(
+    T: int,
+    schedule: Literal["linear", "cosine"] = "cosine",
+    max_beta: float = 0.999,
+) -> torch.Tensor:
+    """
+    Create a beta schedule tensor of length ``T``.
+
+    Args:
+        T: Number of diffusion steps (> 0).
+        schedule: Either ``"linear"`` or ``"cosine"`` (Nichol & Dhariwal).
+        max_beta: Upper clamp for beta values (<= 1.0) to ensure numerical stability.
+
+    Returns:
+        A 1-D float32 tensor of shape ``(T,)`` containing betas in (0, 1).
+
+    Raises:
+        ValueError: If ``schedule`` is not one of the supported options.
+    """
     if schedule == "linear":
         betas = torch.linspace(1e-4, 0.02, T)
     elif schedule == "cosine":
@@ -17,7 +36,7 @@ def make_beta_schedule(T, schedule="cosine", max_beta=0.999):
         betas = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
         betas = betas.clamp(0, max_beta).float()
     else:
-        raise ValueError("unknown schedule")
+        raise ValueError(f"unknown schedule: {schedule!r}. Expected 'linear' or 'cosine'.")
     return betas
 
 class DDPM:
